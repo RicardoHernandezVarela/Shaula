@@ -25,15 +25,15 @@ body {
 }
 
 .header .logo {
-  margin-top: 3%;
-  margin-left: 20%;
+  margin-top: 3.8%;
+  margin-left: 18%;
   width: 40%;
   color: #fff;
   display: inline-block;
 }
 
 .header .contacto {
-  margin-top: 3%;
+  margin-top: 3.8%;
   margin-right: 4%;
   float: right;
   color: #fff;
@@ -54,8 +54,7 @@ body {
 	height: 2px;
 	background-color: #fff; /*Color del trigger de la barra de navegación*/
 	position: absolute;
-	margin-top: 5%;
-  top: 3%;
+	margin-top: 6.7%;
 }
 
 .trig-nav span:before, .trig-nav span:after {
@@ -63,11 +62,11 @@ body {
 }
 
 .trig-nav span:before {
-	top: -6px;
+	top: -8px;
 }
 
 .trig-nav span:after {
-	top: 6px;
+	top: 4px;
 }
 
 /*Barra de navegación*/
@@ -154,13 +153,17 @@ body {
 	text-decoration: none;
 	padding: 0 2%;
 	font-weight: 600;
-	font-size: 2vh;
+	font-size: 1.8vh;
+}
+
+.contenido .titulo a span {
+	padding-right: 10px;
 }
 
 .widget {
 	flex-basis: 300px;
 	flex-grow: 10;
-	height: 300px;
+	height: 200px;
 	margin: 15px;
 	border-radius: 6px;
 	background-color: #fffff8;
@@ -172,7 +175,7 @@ body {
 .widget .titulo {
 	margin-top: 0;
 	position: relative;
-	height: 15%;
+	height: 20%;
 	background-color: #265a7f;
 	border-bottom: 1px solid #dfe4ec;
 	padding: 10px;

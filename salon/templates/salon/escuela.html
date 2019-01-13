@@ -5,9 +5,9 @@
 {% block body %}
 <div class="contenido">
   <div class="titulo">
-      <a href="#">Crear Grupo</a>
-      <a href="#">Agregar Profesor</a>
-      <a href="#">Agregar Alumno</a>
+      <a href="#"><span><i class="fa fa-plus"></i></span>Crear Grupo</a>
+      <a href="#"><span><i class="fa fa-plus"></i></span>Agregar Profesor</a>
+      <a href="#"><span><i class="fa fa-plus"></i></span>Agregar Alumno</a>
   </div>
   {% for grupo in user.escuela.grupo_set.all %}
   <div class="widget">
