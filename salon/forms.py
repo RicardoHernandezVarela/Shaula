@@ -17,3 +17,16 @@ class AdministrativoSignUpForm(UserCreationForm):
         if commit:
             user.save()
         return user
+
+class ProfesorSignUpForm(UserCreationForm):
+
+    class Meta(UserCreationForm.Meta):
+        model = User
+        fields = ('escuela', 'username', 'first_name', 'last_name', 'email', 'edad')
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.is_profesor = True
+        if commit:
+            user.save()
+        return user

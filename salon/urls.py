@@ -7,6 +7,7 @@ urlpatterns = [
 
     path('administrativo/', include(([
         path('', administrativo.GruposView.as_view(), name='grupos'),
+        path('creargrupo/', administrativo.CrearGrupo.as_view(), name='crear-grupo'),
     ], 'salon'), namespace='adminis')),
 
 ]

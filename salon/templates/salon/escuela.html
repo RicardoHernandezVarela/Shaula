@@ -5,8 +5,8 @@
 {% block body %}
 <div class="contenido">
   <div class="titulo">
-      <a href="#"><span><i class="fa fa-plus"></i></span>Crear Grupo</a>
-      <a href="#"><span><i class="fa fa-plus"></i></span>Agregar Profesor</a>
+      <a href="{% url 'adminis:crear-grupo' %}"><span><i class="fa fa-plus"></i></span>Crear Grupo</a>
+      <a href="{% url 'profesor-signup' %}"><span><i class="fa fa-plus"></i></span>Agregar Profesor</a>
       <a href="#"><span><i class="fa fa-plus"></i></span>Agregar Alumno</a>
   </div>
   {% for grupo in user.escuela.grupo_set.all %}

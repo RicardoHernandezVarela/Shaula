@@ -24,4 +24,5 @@ urlpatterns = [
     path('', include('salon.urls')),
     path('', include('django.contrib.auth.urls')),
     path('signup/administrativo/', administrativo.administrativoSignUpView.as_view(), name='admin-signup'),
+    path('signup/profesor/', profesor.profesorSignUpView.as_view(), name='profesor-signup'),
 ]

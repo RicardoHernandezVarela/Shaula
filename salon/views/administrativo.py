@@ -9,7 +9,7 @@ from django.utils.decorators import method_decorator
 from django.views.generic import CreateView, ListView, UpdateView, DetailView
 
 from salon.forms import AdministrativoSignUpForm
-from salon.models import User, Escuela, Administrativo
+from salon.models import User, Escuela, Administrativo, Grupo
 from salon.decorators import admin_required
 
 class administrativoSignUpView(CreateView):
@@ -35,3 +35,8 @@ class GruposView(ListView):
     def get_queryset(self):
         queryset = self.request.user.escuela
         return queryset
+
+@method_decorator([login_required, admin_required], name='dispatch')
+class CrearGrupo(CreateView):
+    model = Grupo
+    fields = ['escuela', 'nombre', 'nivel']
