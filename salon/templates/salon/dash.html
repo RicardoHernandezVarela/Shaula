@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  	<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>{% block title %}{% endblock %}</title>
+		{% load static %}
+		<link rel="icon" type="image/ico" href="{% static 'salon/logo.png' %}"/>
+
+    <link href="https://fonts.googleapis.com/css?family=PT+Sans" rel="stylesheet">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+
+    <link rel="stylesheet" type="text/css" href="{% static 'salon/dash.css' %}"/>
+		<script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
+		<script src="{% static 'salon/dash.js' %}"></script>
+
+	</head>
+	<body>
+	<!--Encabezado-->
+		<div class="header">
+			<a href="#" class="trig-nav"><span></span></a>
+	    <div class="logo">
+				<span>{{user.escuela.nombre}}</span>
+	    </div>
+	    <div class="contacto">
+	      <i class="fa fa-tachometer"></i>
+	      <span>Shaula</span>
+	    </div>
+		</div>
+	  <!--Barra de navegación-->
+	  <div class="side-nav">
+			<div class="short-info">
+			</div>
+			<nav class="nav-cont">
+	      <div class="side-img">
+					<div class="">
+
+					</div>
+					<h1>{% block User %}{% endblock %}</h1>
+					<a href="{% url 'logout' %}">Salir</a>
+	      </div>
+	      <ul>
+	        <li>
+	          <a href="#" class="active">
+	            <span><i class="fa fa-envelope"></i></span>
+	            <span>Grupos</span>
+	          </a>
+	        </li>
+	        <li>
+	          <a href="#">
+	            <span><i class="fa fa-user"></i></span>
+	            <span>Alumnos</span>
+	          </a>
+	        </li>
+	        <li>
+	          <a href="#">
+	            <span><i class="fa fa-user"></i></span>
+	            <span>Profesores</span>
+	          </a>
+	        </li>
+	        <li>
+	          <a href="#">
+	            <span><i class="fa fa-credit-card-alt"></i></span>
+	            <span>Estadística</span>
+	          </a>
+	        </li>
+	      </ul>
+		  </nav>
+		</div>
+		<!--Contenido principal-->
+		<div class="principal">
+      {% block body %}
+      {% endblock %}
+
+		</div>
+	</body>
+</html>

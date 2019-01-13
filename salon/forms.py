@@ -9,7 +9,7 @@ class AdministrativoSignUpForm(UserCreationForm):
 
     class Meta(UserCreationForm.Meta):
         model = User
-        fields = ('username', 'escuela', 'nombre', 'primer_apellido', 'segundo_apellido', 'edad')
+        fields = ('escuela', 'username', 'first_name', 'last_name', 'email', 'edad')
 
     def save(self, commit=True):
         user = super().save(commit=False)

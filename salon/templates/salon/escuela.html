@@ -1,0 +1,23 @@
+{% extends 'salon/dash.html' %}
+{% block title %}Shaula: {{user.escuela.nombre}}{% endblock %}
+{% block User %}{{ user.first_name }} {{ user.last_name }}{% endblock %}
+
+{% block body %}
+<div class="contenido">
+  <div class="titulo">
+      <a href="#">Crear Grupo</a>
+      <a href="#">Agregar Profesor</a>
+      <a href="#">Agregar Alumno</a>
+  </div>
+  {% for grupo in user.escuela.grupo_set.all %}
+  <div class="widget">
+    <div class="titulo">
+      {{ grupo.nombre }}
+    </div>
+    <div class="detalles">
+      {{ grupo.nivel }}
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}

@@ -1,9 +1,12 @@
-from django.urls import path
+from django.urls import path, include
+from django.views.generic.base import TemplateView
 from salon.views import administrativo, estudiante, profesor
 
-#app_name = 'salon'
-
 urlpatterns = [
-    path('signup/', administrativo.administrativoSignUpView.as_view(), name='signup'),
-    
+    path('', TemplateView.as_view(template_name='home.html'), name='home'),
+
+    path('administrativo/', include(([
+        path('', administrativo.GruposView.as_view(), name='grupos'),
+    ], 'salon'), namespace='adminis')),
+
 ]

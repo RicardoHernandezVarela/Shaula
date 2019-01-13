@@ -7,10 +7,18 @@
     {% if user.is_authenticated %}
       Hi {{ user.username }}!
       <p><a href="{% url 'logout' %}">logout</a></p>
+      {% if user.is_administrativo %}
+        <p>Eres un administrativo de esta escuela</p>
+        <a href="{% url 'adminis:grupos' %}">Ir a mi dash</a>
+      {% elif user.is_profesor%}
+        <a href="#">Ir a mi panel de profesor</a>
+      {% else %}
+        <a href="#">Ir a mi panel de estudiante</a>
+      {% endif %}
     {% else %}
       <p>You are not logged in</p>
       <a href="{% url 'login' %}">login</a> |
-      <a href="{% url 'signup' %}">signup</a>
+      <a href="{% url 'admin-signup' %}">signup</a>
     {% endif %}
   </div>
 {% endblock %}
