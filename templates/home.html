@@ -11,7 +11,7 @@
         <p>Eres un administrativo de esta escuela</p>
         <a href="{% url 'adminis:grupos' %}">Ir a mi dash</a>
       {% elif user.is_profesor%}
-        <a href="#">Ir a mi panel de profesor</a>
+        <a href="{% url 'profesor:board' %}">Ir a mi panel de profesor</a>
       {% else %}
         <a href="#">Ir a mi panel de estudiante</a>
       {% endif %}

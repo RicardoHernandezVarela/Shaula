@@ -5,12 +5,13 @@ from django.db import transaction
 from django.db.models import Count
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
+from django import forms
 from django.utils.decorators import method_decorator
 from django.views.generic import CreateView, ListView, UpdateView, DetailView
 
-from salon.forms import AdministrativoSignUpForm
-from salon.models import User, Escuela, Administrativo, Grupo
-from salon.decorators import admin_required
+from salon.forms import AdministrativoSignUpForm, CursoForm
+from salon.models import User, Escuela, Administrativo, Grupo, Curso, Profesor
+from salon.decorators import admin_required, profesor_required
 
 class administrativoSignUpView(CreateView):
     model = User
@@ -29,14 +30,56 @@ class administrativoSignUpView(CreateView):
 @method_decorator([login_required, admin_required], name='dispatch')
 class GruposView(ListView):
     model = Escuela
-    #context_object_name = 'escuelas'
     template_name = 'salon/escuela.html'
 
     def get_queryset(self):
         queryset = self.request.user.escuela
         return queryset
 
+
+@method_decorator([login_required, admin_required], name='dispatch')
+class ProfesoresView(ListView):
+    context_object_name = 'profesores'
+    template_name = 'salon/profesores.html'
+
+    def get_queryset(self):
+        id = self.request.user.escuela.id
+        usuarios = User.objects.filter(is_profesor=True)
+        queryset = usuarios.filter(escuela_id=id)
+        return queryset
+
 @method_decorator([login_required, admin_required], name='dispatch')
 class CrearGrupo(CreateView):
     model = Grupo
-    fields = ['escuela', 'nombre', 'nivel']
+    fields = ['nombre', 'nivel']
+    template_name = 'salon/grupo_form.html'
+
+    def form_valid(self, form):
+        grupo = form.save(commit=False)
+        grupo.escuela = self.request.user.escuela
+        grupo.save()
+        messages.success(self.request, 'Se creo el grupo con exito.')
+        return redirect('adminis:grupos')
+
+@method_decorator([login_required, admin_required], name='dispatch')
+class CursosView(DetailView):
+    model = Grupo
+    template_name = 'salon/clases.html'
+
+@login_required
+@admin_required
+def crear_curso(request, pk):
+    # Filtrar con el pk del curso y la escuela del usuario que crea el curso
+    grupo = get_object_or_404(Grupo, pk=pk, escuela=request.user.escuela)
+
+    if request.method == 'POST':
+        form = CursoForm(request.POST)
+        if form.is_valid():
+            curso = form.save(commit=False)
+            curso.grupo = grupo
+            curso.save()
+            return redirect('adminis:cursos', grupo.pk)
+    else:
+        form = CursoForm()
+
+    return render(request, 'salon/curso_form.html', {'grupo': grupo, 'form': form})

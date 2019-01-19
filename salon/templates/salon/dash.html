@@ -21,11 +21,13 @@
 		<div class="header">
 			<a href="#" class="trig-nav"><span></span></a>
 	    <div class="logo">
-				<span>{{user.escuela.nombre}}</span>
+				<a href="#">
+					<span>{{user.escuela.nombre}}</span>
+				</a>
 	    </div>
 	    <div class="contacto">
 	      <i class="fa fa-tachometer"></i>
-	      <span>Shaula</span>
+				<a href="{% url 'home' %}"><span>Shaula</span></a>
 	    </div>
 		</div>
 	  <!--Barra de navegación-->
@@ -42,9 +44,9 @@
 	      </div>
 	      <ul>
 	        <li>
-	          <a href="#" class="active">
+	          <a href="{% block linkOp1 %}{% endblock %}" class="{% block active %}{% endblock %}">
 	            <span><i class="fa fa-envelope"></i></span>
-	            <span>Grupos</span>
+	            <span>{% block opcion1 %}{% endblock %}</span>
 	          </a>
 	        </li>
 	        <li>
@@ -54,7 +56,7 @@
 	          </a>
 	        </li>
 	        <li>
-	          <a href="#">
+	          <a href="{% url 'adminis:profesores' %}">
 	            <span><i class="fa fa-user"></i></span>
 	            <span>Profesores</span>
 	          </a>

@@ -2,25 +2,22 @@
 {% block title %}Shaula: {{user.escuela.nombre}}{% endblock %}
 {% block User %}{{ user.first_name }} {{ user.last_name }}{% endblock %}
 {% block opcion1 %}Grupos{% endblock %}
-{% block linkOp1 %}{% url 'adminis:grupos' %}{% endblock %}
 {% block active %}active{% endblock %}
 
 {% block body %}
 <div class="contenido">
   <div class="titulo">
-      <a href="{% url 'adminis:crear-grupo' %}"><span><i class="fa fa-plus"></i></span>Crear Grupo</a>
       <a href="{% url 'profesor-signup' %}"><span><i class="fa fa-plus"></i></span>Agregar Profesor</a>
-      <a href="#"><span><i class="fa fa-plus"></i></span>Agregar Alumno</a>
   </div>
-  {% for grupo in user.escuela.grupo_set.all %}
+  {% for profesor in profesores %}
   <div class="widget">
     <div class="titulo">
-      <a href="{% url 'adminis:cursos' grupo.id %}">{{ grupo.nombre }}</a>
+      <a href="#">{{ profesor.username }}</a>
     </div>
     <div class="detalles">
-      <h3>{{ grupo.nivel }}</h3>
-      <h3>Este grupo tiene {{ grupo.curso_set.count }} cursos</h3>
-
+      {% for curso in profesor.profesor.cursos.all %}
+        <h3>{{ curso.nombre }}</h3>
+      {% endfor %}
     </div>
   </div>
   {% endfor %}

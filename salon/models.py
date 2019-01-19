@@ -22,13 +22,34 @@ class User(AbstractUser):
 class Administrativo(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
 
+    def __str__(self):
+        return self.user.username
+
 class Grupo(models.Model):
-    escuela = models.ManyToManyField(Escuela)
+    escuela = models.ForeignKey(Escuela, on_delete=models.CASCADE, null=True)
     nombre = models.CharField(max_length=250)
     nivel = models.CharField(max_length=250)
 
-    def get_absolute_url(self):
-        return reverse('adminis:grupos')
-
     def __str__(self):
         return self.nombre + ' - ' + self.nivel
+
+class Curso(models.Model):
+    nombre = models.CharField(max_length=255)
+    grupo = models.ForeignKey(Grupo, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.nombre + ' - ' + self.grupo.nombre + ' - ' + self.grupo.nivel
+
+class Profesor(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+    cursos = models.ManyToManyField(Curso)
+
+    def __str__(self):
+        return self.user.username
+
+class Seccion(models.Model):
+    curso = models.ForeignKey(Curso, on_delete=models.CASCADE)
+    nombre = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.curso.nombre + ": Sección " + self.nombre
