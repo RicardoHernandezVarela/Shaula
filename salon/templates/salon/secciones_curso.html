@@ -1,14 +1,15 @@
-{% extends 'salon/dash.html' %}
+{% extends 'salon/dashProf.html' %}
 {% block title %}Shaula: {{user.escuela.nombre}}{% endblock %}
 {% block User %}{{ user.first_name }} {{ user.last_name }}{% endblock %}
-{% block opcion1 %}Cursos{% endblock %}
-{% block linkOp1 %}{% url 'profesor:board' %}{% endblock %}
+{% block active3 %}active{% endblock %}
 
 {% block body %}
 <div class="contenido">
   <div class="titulo">
-      <a href="{% url 'profesor:crear-seccion' curso.id %}"><span><i class="fa fa-plus"></i></span>Crear Unidad</a>
       <a href="#">{{ curso.nombre }}</a>
+      <button class="btn btn-secondary btn-sm mb-1" data-toggle="modal" data-target="#seccion">
+          Crear Unidad
+      </button>
   </div>
   {% for seccion in curso.seccion_set.all %}
   <div class="widget">
@@ -19,5 +20,6 @@
     </div>
   </div>
   {% endfor %}
+  {% include "salon/seccion_form.html" %}
 </div>
 {% endblock %}

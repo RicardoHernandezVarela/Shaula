@@ -8,17 +8,18 @@ urlpatterns = [
     path('administrativo/', include(([
         path('', administrativo.GruposView.as_view(), name='grupos'),
         path('creargrupo/', administrativo.CrearGrupo.as_view(), name='crear-grupo'),
-        path('grupo<int:pk>/', administrativo.CursosView.as_view(), name='cursos'),
+        path('grupo/<int:pk>/', administrativo.CursosView.as_view(), name='cursos'),
         # /grupo<int:pk>//
-        path('grupo<int:pk>/agregarcurso/', administrativo.crear_curso, name='crear-curso'),
+        path('grupo/<int:pk>/agregarcurso/', administrativo.crear_curso, name='crear-curso'),
         path('profesores/', administrativo.ProfesoresView.as_view(), name='profesores'),
+        path('alumnos/', administrativo.AlumnosView.as_view(), name='alumnos'),
     ], 'salon'), namespace='adminis')),
 
     path('profesor/', include(([
         path('cursos/', profesor.ProfesorBoard.as_view(), name='board'),
-        path('cursos/<int:pk>/', profesor.ver_secciones, name='secciones'),
-        path('cursos/<int:pk>/crearseccion/', profesor.crear_seccion, name='crear-seccion'),
-        path('cursos/seccion/<int:pk>', profesor.ver_actividades, name='actividades'),
+        path('cursos/<int:pk>/', profesor.ver_secciones.as_view(), name='secciones'),
+        path('cursos/seccion/<int:pk>', profesor.ver_actividades.as_view(), name='actividades'),
+        path('cursos/seccion/calificarActividad/<int:pk>', profesor.calificar.as_view(), name='calificar'),
     ], 'salon'), namespace='profesor')),
 
 ]

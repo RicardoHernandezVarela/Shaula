@@ -15,7 +15,7 @@
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 
     <link rel="stylesheet" type="text/css" href="{% static 'salon/dash.css' %}"/>
-		<script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
+    <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
 
 		<script src="{% static 'salon/dash.js' %}"></script>
 
@@ -48,25 +48,25 @@
 	      </div>
 	      <ul>
 	        <li>
-	          <a href="{% url 'adminis:grupos' %}" class="{% block active %}{% endblock %}">
+	          <a href="{% url 'profesor:board' %}" class="{% block active1 %}{% endblock %}">
 	            <span><i class="fa fa-envelope"></i></span>
-	            <span>Grupos</span>
+	            <span>Cursos</span>
 	          </a>
 	        </li>
 	        <li>
-	          <a href="{% url 'adminis:alumnos' %}">
+	          <a href="#" class="{% block active2 %}{% endblock %}">
 	            <span><i class="fa fa-user"></i></span>
 	            <span>Alumnos</span>
 	          </a>
 	        </li>
 	        <li>
-	          <a href="{% url 'adminis:profesores' %}">
+	          <a href="#" class="{% block active3 %}{% endblock %}">
 	            <span><i class="fa fa-user"></i></span>
-	            <span>Profesores</span>
+	            <span>Secciones</span>
 	          </a>
 	        </li>
 	        <li>
-	          <a href="#">
+	          <a href="#" class="{% block active4 %}{% endblock %}">
 	            <span><i class="fa fa-credit-card-alt"></i></span>
 	            <span>Estadística</span>
 	          </a>

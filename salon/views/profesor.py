@@ -6,10 +6,10 @@ from django.db.models import Count
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
-from django.views.generic import CreateView, ListView, UpdateView, DetailView
+from django.views.generic import CreateView, ListView, UpdateView, DetailView, FormView
 
-from salon.forms import AdministrativoSignUpForm, ProfesorSignUpForm, SeccionForm
-from salon.models import User, Escuela, Administrativo, Profesor, Grupo, Curso, Seccion
+from salon.forms import ProfesorSignUpForm, SeccionForm, ActividadForm, CalificacionForm
+from salon.models import User, Escuela, Administrativo, Profesor, Grupo, Curso, Seccion, Actividad, SeccionesAlumno, Calificacion
 from salon.decorators import profesor_required, admin_required
 
 @method_decorator([login_required, admin_required], name='dispatch')
@@ -36,33 +36,66 @@ class ProfesorBoard(ListView):
         queryset = self.request.user.profesor.cursos.all()
         return queryset
 
-@login_required
-@profesor_required
-def ver_secciones(request, pk):
-    # Filtrar con el pk del curso
-    curso = get_object_or_404(Curso, pk=pk)
-    return render(request, 'salon/secciones_curso.html', {'curso': curso })
+# Ver secciones (unidades) y crear nuevas secciones
+@method_decorator([login_required, profesor_required], name='dispatch')
+class ver_secciones(DetailView, FormView):
+    template_name = 'salon/secciones_curso.html'
+    model = Curso
+    form_class = SeccionForm
+
+    def get_object(self):
+        curso = Curso.objects.get(pk=self.kwargs['pk'])
+        return curso
+
+    def form_valid(self, form):
+        curso = Curso.objects.get(pk=self.kwargs['pk'])
+        grupo = curso.grupo
+        seccion = form.save(commit=False)
+        seccion.curso = curso
+        seccion.save()
+        for estudiante in grupo.estudiante_set.all():
+            SeccionesAlumno.objects.create(seccion=seccion, estudiante=estudiante)
+        return redirect('profesor:secciones', curso.pk)
+
+@method_decorator([login_required, profesor_required], name='dispatch')
+class ver_actividades(DetailView, FormView):
+    template_name = 'salon/actividades.html'
+    model = Seccion
+    form_class = ActividadForm
+
+    def get_object(self):
+        seccion = Seccion.objects.get(pk=self.kwargs['pk'])
+        return seccion
+
+    def form_valid(self, form):
+        seccion = Seccion.objects.get(pk=self.kwargs['pk'])
+        seccionesalumno = seccion.seccionesalumno_set.all()
+        actividad = form.save(commit=False)
+        actividad.seccion = seccion
+        actividad.save()
+        for sec_alum in seccionesalumno:
+            Calificacion.objects.create(actividad=actividad, seccionesalumno=sec_alum, puntos=1)
+        return redirect('profesor:actividades', seccion.pk)
+
+@method_decorator([login_required, profesor_required], name='dispatch')
+class calificar(UpdateView):
+    model = Calificacion
+    fields = ['puntos']
 
 @login_required
 @profesor_required
-def crear_seccion(request, pk):
-    # Filtrar con el pk del curso
-    curso = get_object_or_404(Curso, pk=pk)
+def calificar_actividad(request, pk):
+    # Filtrar con el pk del curso y la escuela del usuario que crea el curso
+    actividad = get_object_or_404(Actividad, pk=pk)
 
     if request.method == 'POST':
-        form = SeccionForm(request.POST)
+        form = CalificacionForm(request.POST)
         if form.is_valid():
-            seccion = form.save(commit=False)
-            seccion.curso = curso
-            seccion.save()
-            return redirect('profesor:secciones', curso.pk)
+            calificacion = form.save(commit=False)
+            calificacion.actividad = actividad
+            calificacion.save()
+            return redirect('profesor:actividades', actividad.seccion.pk)
     else:
-        form = SeccionForm()
-    return render(request, 'salon/seccion_form.html', {'curso': curso, 'form': form})
+        form = CalificacionForm()
 
-@login_required
-@profesor_required
-def ver_actividades(request, pk):
-    # Filtrar con el pk de la Sección
-    seccion = get_object_or_404(Seccion, pk=pk)
-    return render(request, 'salon/actividades.html', {'seccion': seccion })
+    return render(request, 'salon/calificacion_form.html', {'actividad': actividad, 'form': form})

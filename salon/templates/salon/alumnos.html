@@ -1,21 +1,22 @@
-{% extends 'salon/dashProf.html' %}
+{% extends 'salon/dash.html' %}
 {% block title %}Shaula: {{user.escuela.nombre}}{% endblock %}
 {% block User %}{{ user.first_name }} {{ user.last_name }}{% endblock %}
-{% block opcion1 %}Cursos{% endblock %}
-{% block active1 %}active{% endblock %}
+{% block opcion1 %}Grupos{% endblock %}
+{% block active %}active{% endblock %}
 
 {% block body %}
 <div class="contenido">
   <div class="titulo">
-
+      <a href="#"><span><i class="fa fa-plus"></i></span>Asignar a grupo</a>
   </div>
-  {% for curso in cursos %}
+  {% for estudiante in estudiantes %}
   <div class="widget">
     <div class="titulo">
-      <a href="{% url 'profesor:secciones' curso.id %}">{{ curso.nombre }}</a>
+      <a href="#">{{ estudiante.username }}</a>
+
     </div>
     <div class="detalles">
-      <h3>{{ curso.grupo }}</h3>
+      {{ estudiante.grupo }}
     </div>
   </div>
   {% endfor %}

@@ -1,8 +1,6 @@
 {% extends 'salon/dash.html' %}
 {% block title %}Shaula: {{user.escuela.nombre}}{% endblock %}
 {% block User %}{{ user.first_name }} {{ user.last_name }}{% endblock %}
-{% block opcion1 %}Grupos{% endblock %}
-{% block linkOp1 %}{% url 'adminis:grupos' %}{% endblock %}
 {% block active %}active{% endblock %}
 
 {% block body %}
@@ -10,7 +8,7 @@
   <div class="titulo">
       <a href="{% url 'adminis:crear-grupo' %}"><span><i class="fa fa-plus"></i></span>Crear Grupo</a>
       <a href="{% url 'profesor-signup' %}"><span><i class="fa fa-plus"></i></span>Agregar Profesor</a>
-      <a href="#"><span><i class="fa fa-plus"></i></span>Agregar Alumno</a>
+      <a href="{% url 'estudiante-signup' %}"><span><i class="fa fa-plus"></i></span>Agregar Alumno</a>
   </div>
   {% for grupo in user.escuela.grupo_set.all %}
   <div class="widget">

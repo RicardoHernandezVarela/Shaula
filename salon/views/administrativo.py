@@ -7,11 +7,11 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django import forms
 from django.utils.decorators import method_decorator
-from django.views.generic import CreateView, ListView, UpdateView, DetailView
+from django.views.generic import CreateView, ListView, UpdateView, DetailView, FormView
 
-from salon.forms import AdministrativoSignUpForm, CursoForm
-from salon.models import User, Escuela, Administrativo, Grupo, Curso, Profesor
-from salon.decorators import admin_required, profesor_required
+from salon.forms import AdministrativoSignUpForm, CursoForm, EstudianteForm
+from salon.models import User, Escuela, Administrativo, Grupo, Curso, Profesor, Estudiante
+from salon.decorators import admin_required
 
 class administrativoSignUpView(CreateView):
     model = User
@@ -49,6 +49,17 @@ class ProfesoresView(ListView):
         return queryset
 
 @method_decorator([login_required, admin_required], name='dispatch')
+class AlumnosView(ListView):
+    context_object_name = 'estudiantes'
+    template_name = 'salon/alumnos.html'
+
+    def get_queryset(self):
+        id = self.request.user.escuela.id
+        usuarios = User.objects.filter(is_estudiante=True)
+        queryset = usuarios.filter(escuela_id=id)
+        return queryset
+
+@method_decorator([login_required, admin_required], name='dispatch')
 class CrearGrupo(CreateView):
     model = Grupo
     fields = ['nombre', 'nivel']
@@ -62,9 +73,21 @@ class CrearGrupo(CreateView):
         return redirect('adminis:grupos')
 
 @method_decorator([login_required, admin_required], name='dispatch')
-class CursosView(DetailView):
+class CursosView(DetailView, FormView):
     model = Grupo
     template_name = 'salon/clases.html'
+    form_class = EstudianteForm
+
+    def get_object(self):
+        grupo = Grupo.objects.get(pk=self.kwargs['pk'])
+        return grupo
+
+    def form_valid(self, form):
+        grupo = Grupo.objects.get(pk=self.kwargs['pk'])
+        estudiante = form.save(commit=False)
+        estudiante.grupo = grupo
+        estudiante.save()
+        return redirect('adminis:cursos', grupo.pk)
 
 @login_required
 @admin_required

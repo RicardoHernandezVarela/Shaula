@@ -3,7 +3,7 @@ from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.db import transaction
 from django.forms.utils import ValidationError
 
-from salon.models import User, Escuela, Administrativo, Profesor, Grupo, Curso, Seccion
+from salon.models import User, Escuela, Administrativo, Profesor, Estudiante, Grupo, Curso, Seccion, Actividad, Calificacion
 
 class AdministrativoSignUpForm(UserCreationForm):
 
@@ -20,11 +20,6 @@ class AdministrativoSignUpForm(UserCreationForm):
         return user
 
 class ProfesorSignUpForm(UserCreationForm):
-    cursos = forms.ModelMultipleChoiceField(
-        queryset=Curso.objects.all(),
-        widget=forms.CheckboxSelectMultiple,
-        required=True
-    )
 
     class Meta(UserCreationForm.Meta):
         model = User
@@ -36,7 +31,19 @@ class ProfesorSignUpForm(UserCreationForm):
         user.is_profesor = True
         user.save()
         profesor = Profesor.objects.create(user=user)
-        profesor.cursos.add(*self.cleaned_data.get('cursos'))
+        return user
+
+class EstudianteSignUpForm(UserCreationForm):
+
+    class Meta(UserCreationForm.Meta):
+        model = User
+        fields = ('escuela', 'username', 'first_name', 'last_name', 'email', 'edad')
+
+    @transaction.atomic
+    def save(self):
+        user = super().save(commit=False)
+        user.is_estudiante = True
+        user.save()
         return user
 
 class CursoForm(forms.ModelForm):
@@ -48,3 +55,21 @@ class SeccionForm(forms.ModelForm):
     class Meta:
         model = Seccion
         fields = ('nombre',)
+
+class ActividadForm(forms.ModelForm):
+    class Meta:
+        model = Actividad
+        fields = ('titulo', 'puntaje', 'categoria')
+
+class EstudianteForm(forms.ModelForm):
+    id = 1 #Obtener este valor dinamicamente
+    user = forms.ModelChoiceField(queryset=User.objects.filter(escuela_id=id, is_estudiante=True))
+
+    class Meta:
+        model = Estudiante
+        fields = ('user',)
+
+class CalificacionForm(forms.ModelForm):
+    class Meta:
+        model = Calificacion
+        fields = ('seccionesalumno', 'puntos')

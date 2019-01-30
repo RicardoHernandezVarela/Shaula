@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block title %}Calificar{% endblock %}
+
+{% block content %}
+  <div class="form">
+      <form class="#" action="" method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          {% include 'form-template.html' %}
+            <div class="field">
+                <button type="submit" class="boton">Calificar</button>
+            </div>
+      </form>
+  </div>
+{% endblock %}
