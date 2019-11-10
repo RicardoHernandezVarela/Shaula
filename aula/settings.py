@@ -25,7 +25,7 @@ SECRET_KEY = 't%nmr&*oa!3tj-uj^v32m^o!jm*uoyuf(iyd83jgop81rmi4tj'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['shaula.pythonanywhere.com']
 
 
 # Application definition
@@ -148,3 +148,7 @@ AUTH_USER_MODEL = 'salon.User'
 LOGIN_REDIRECT_URL = 'home'
 
 LOGOUT_REDIRECT_URL = 'home'
+
+MEDIA_URL = '/media/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
